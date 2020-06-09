@@ -1,0 +1,18 @@
+{
+  "name": "fullstack-hy2020-phonebook-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:snailthrone/fullstack-hy2020-phonebook-backend.git",
+  "author": "snailthrone <eemeli.martti@live.fi>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}

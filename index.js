@@ -3,7 +3,9 @@ const express = require('express');
 const app = express();
 const PORT = 3001;
 
-const persons = [
+const randomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
+
+let persons = [
   {
     "name": "Arto Hellas",
     "number": "040-123456",
@@ -26,8 +28,27 @@ const persons = [
   }
 ]
 
+app.use(express.json())
+
 app.get('/api/persons', (request, response) => {
   response.json(persons)
+});
+
+app.post('/api/persons', (request, response) => {
+  const person = request.body;
+
+  if (persons.some(({ name }) => name === person.name)) {
+    response.status(400).json({ error: 'name must be unique'})
+  } else if (!person.name) {
+    response.status(400).json({ error: 'name cannot be blank' })
+  } else if (!person.number) {
+    response.status(400).json({ error: 'number cannot be blank' })
+  } else {
+    const maxId = Math.max(...persons.map(({ id }) => id));
+    person.id = randomNumber(maxId, 1000);
+    persons = persons.concat(person);
+    response.send(person)    
+  }
 });
 
 app.get('/api/persons/:id', (request, response) => {
@@ -38,6 +59,12 @@ app.get('/api/persons/:id', (request, response) => {
   } else {
     response.status(404).end();
   }
+});
+
+app.delete('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id);
+  persons = persons.filter(person => person.id !== id)
+  response.status(204).end()
 });
 
 app.get('/info', (request, response) => {

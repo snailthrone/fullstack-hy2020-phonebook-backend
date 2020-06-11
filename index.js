@@ -43,6 +43,7 @@ const logger = (tokens, req, res) => (
 
 app.use(cors())
 app.use(express.json())
+app.use(express.static('build'))
 app.use(morgan(logger))
 
 app.get('/api/persons', (request, response) => {

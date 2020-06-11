@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan');
 
 const app = express();
 const PORT = 3001;
@@ -28,7 +29,19 @@ let persons = [
   }
 ]
 
+const logger = (tokens, req, res) => (
+  [
+    tokens.method(req, res),
+    tokens.url(req, res),
+    tokens.status(req, res),
+    ...(
+      tokens.method(req, res) === 'POST' ? [JSON.stringify(req.body)] : []
+    )
+  ].join(' ')
+)
+
 app.use(express.json())
+app.use(morgan(logger))
 
 app.get('/api/persons', (request, response) => {
   response.json(persons)

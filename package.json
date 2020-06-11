@@ -6,6 +6,8 @@
   "author": "snailthrone <eemeli.martti@live.fi>",
   "license": "MIT",
   "scripts": {
+    "build:client": "rm -rf build && cd ../fullstack-hy2020/part02/puhelinluettelo && yarn build --prod && cp -r build ../../../fullstack-hy2020-phonebook-backend/",
+    "deploy": "git push heroku master",
     "dev": "nodemon index.js",
     "start": "node index.js"
   },

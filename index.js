@@ -31,9 +31,12 @@ app.get('/api/persons', (request, response) => {
   })
 });
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
   const person = request.body;
-  new Person(person).save().then(result => response.send(person)) 
+
+  new Person(person).save()
+    .then(result => response.send(result))
+    .catch(error => next(error))
 });
 
 app.put('/api/persons/:id', (request, response) => {
@@ -56,18 +59,6 @@ app.delete('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 });
 
-const errorHandler = (error, request, response, next) => {
-  console.error(error.message);
-  
-  if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'id not found' })
-  }
-
-  next(error)
-}
-
-app.use(errorHandler)
-
 app.get('/info', (request, response) => {
   const amount = Person.countDocuments({}).then((val) => {
     const dateUTC = new Date().toString();
@@ -79,6 +70,20 @@ app.get('/info', (request, response) => {
     )
   })
 });
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+  
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'id not found' })
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
+  }
+
+  next(error)
+}
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

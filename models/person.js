@@ -9,7 +9,7 @@ mongoose.set('useFindAndModify', false)
 
 mongoose.connect(url, { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
-  .catch(({ message }) => console.log(`Error connecting to MongoDB: ${message}`))
+  .catch(({ message }) => console.log(`Error connecting to MongoDB: ${message}`))
 
 const personSchema = new mongoose.Schema({
   name: {

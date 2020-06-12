@@ -9,6 +9,7 @@
     "build:client": "rm -rf build && cd ../fullstack-hy2020/part02/puhelinluettelo && yarn build --prod && cp -r build ../../../fullstack-hy2020-phonebook-backend/",
     "deploy": "git push heroku master",
     "dev": "nodemon index.js",
+    "lint": "eslint .",
     "start": "node index.js"
   },
   "dependencies": {
@@ -20,6 +21,7 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "eslint": "^7.2.0",
     "nodemon": "^2.0.4"
   },
   "engines": {
